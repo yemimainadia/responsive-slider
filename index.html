@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <title>Slideshow with Animated Circular </title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Viga&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Comfortaa', cursive;
+            margin: 0;
+            padding: 0;
+            color: #FFFFFF;
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        }
+        
+        body header {
+            background-color: transparent;
+            font-family: 'Comfortaa', cursive;
+            position: fixed;
+            display: block;
+            width: 100%;
+            height: 48px;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 90;
+        }
+        
+        body header .header-inner {
+            padding: 12px 1.5%;
+        }
+        
+        body header .header-inner .logo {
+            position: relative;
+            display: inline;
+            width: auto;
+            height: auto;
+            float: left;
+        }
+        
+        body header .header-inner .logo a {
+            position: relative;
+            display: inline;
+            width: auto;
+            height: auto;
+            color: #FFFFFF;
+            outline: 0px none;
+            outline: 0px;
+            text-decoration: none;
+            transition: all 0.35s ease-in-out;
+            text-transform: uppercase;
+        }
+        
+        body header .header-inner .logo a:hover {
+            color: rgba(255, 255, 255, 0.45);
+        }
+        
+        body header .header-inner .logo a span {
+            font-weight: 700;
+        }
+        
+        body header .header-inner nav {
+            position: relative;
+            display: inline;
+            margin: 0;
+            padding: 0;
+            list-type-style: none;
+            float: right;
+        }
+        
+        body header .header-inner nav li {
+            position: relative;
+            display: inline;
+            margin-left: 16px;
+        }
+        
+        body header .header-inner nav li a {
+            font-family: 'Oswald', sans-serif;
+            position: relative;
+            font-size: 13px;
+            color: #FFFFFF;
+            text-decoration: none;
+            line-height: 24px;
+            transition: all 0.35s ease-in-out;
+        }
+        
+        body header .header-inner nav li a span {
+            position: relative;
+            z-index: 2;
+        }
+        
+        body header .header-inner nav li a:hover {
+            color: rgba(255, 255, 255, 0.45);
+        }
+        
+        body section.slideshow {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+            height: 100vh;
+            margin: 0 auto;
+            visibility: hidden;
+            overflow: hidden;
+        }
+        
+        body section.slideshow ul.navigation {
+            position: absolute;
+            display: block;
+            width: 640px;
+            height: 640px;
+            padding: 0;
+            margin: 0;
+            left: -230px;
+            top: 50%;
+            margin-top: -320px;
+            z-index: 10;
+        }
+        
+        body section.slideshow ul.navigation li.navigation-item {
+            position: absolute;
+            display: inline-block;
+            overflow: hidden;
+            width: 104px;
+            height: 104px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: border 0.6s ease-in-out;
+        }
+        
+        body section.slideshow ul.navigation li.navigation-item .rotate-holder {
+            position: fixed;
+            display: block;
+            width: 0;
+            height: 0;
+            left: -9999px;
+            top: -9999px;
+        }
+        
+        body section.slideshow ul.navigation li.navigation-item .background-holder {
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 50%;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+        }
+        
+        body section.slideshow ul.navigation li.navigation-item:hover .background-holder {
+            opacity: 0.75;
+        }
+        
+        body section.slideshow ul.navigation li.navigation-item.active .background-holder {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        body section.slideshow .detail {
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 8;
+        }
+        
+        body section.slideshow .detail .detail-item {
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        
+        body section.slideshow .detail .detail-item .headline {
+            font-family: 'Viga', sans-serif;
+            position: absolute;
+            display: block;
+            width: 100%;
+            max-width: calc(100% - 480px);
+            height: 126px;
+            top: 25%;
+            right: 6%;
+            transform: translate(-6%, -25%);
+            overflow: visible;
+            white-space: nowrap;
+            box-sizing: border-box;
+            z-index: 2;
+            text-align: right;
+        }
+        
+        body section.slideshow .detail .detail-item .headline .letter {
+            position: relative;
+            display: inline-block;
+            opacity: 0;
+            visibility: hidden;
+            color: #1e1c1c;
+            font-size: 120px;
+            border-bottom: 7px solid gold;
+            line-height: 110px;
+            font-weight: 900;
+            font-kerning: none;
+            white-space: nowrap;
+            box-sizing: border-box;
+            text-transform: capitalize;
+            letter-spacing: 0.1em
+        }
+        
+        body section.slideshow .detail .detail-item.active .recipe-content {
+            background: rgba(0, 0, 0, 0.39);
+            color: #ffffff;
+            padding: 2.5px 20px;
+            font-size: 30px;
+            letter-spacing: 0.01em;
+            position: absolute;
+            top: 60%;
+            left: 90%;
+            transform: translate(-90%, -60%);
+            width: 45%;
+            z-index: 2;
+        }
+        
+        body section.slideshow .detail .detail-item .background {
+            position: absolute;
+            display: block;
+            width: 100%;
+            width: calc(100% + 100px);
+            height: 100%;
+            height: calc(100% + 100px);
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: visible;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            z-index: 1;
+        }
+        
+        body section.slideshow .detail .detail-item .background::before {
+            content: "";
+            background: linear-gradient(to right, black 0%, rgba(0, 0, 0, 0) 90%);
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 2;
+        }
+        
+        body section.slideshow .detail .detail-item.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <section class="slideshow">
+
+        <ul class="navigation">
+
+            <li class="navigation-item active">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-1.jpg);"></span>
+            </li>
+            <!-- slideshow:navigation:item END -->
+
+            <!-- slideshow:navigation:item START -->
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-2.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-3.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-4.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-5.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-6.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-7.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-8.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-9.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-10.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-11.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-12.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-13.jpg);"></span>
+            </li>
+
+            <li class="navigation-item">
+                <span class="rotate-holder"></span>
+                <span class="background-holder" style="background-image: url(assets/img/img-14.jpg);"></span>
+            </li>
+        </ul>
+
+        <div class="detail">
+
+            <div class="detail-item active">
+                <div class="headline">Step 1</div>
+                <div class="recipe-content">
+                    <p>Combine rice, sugar, salt and rice vinegar. Combine and season to taste.</p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-1.jpg); height: 100vh;"></div>
+                <div class="background" style="background-image: url(assets/img/img-1.jpg); height: 100vh; background-size: cover; background-position: center;"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 2</div>
+                <div class="recipe-content">
+                    <p>Cook egg in a nonstick pan. Spread the egg into a thin layer until fully cooked.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-2.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 3</div>
+                <div class="recipe-content">
+                    <p>Roll egg sheet cut into thin strips. Set aside.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-3.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 4</div>
+                <div class="recipe-content">
+                    <p>Using a mandolin or knife, thinly slide cucumber. Set aside.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-4.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 5</div>
+                <div class="recipe-content">
+                    <p>Cover work surface with cling wrap. Put approximately 2 tbsp worth of rice on wrap. Dip your fingers in water if rice is sticky.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-5.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 6</div>
+                <div class="recipe-content">
+                    <p>Shape rice using the cling wrap and twist into a tight ball. Unwrap.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-6.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 7</div>
+                <div class="recipe-content">
+                    <p>Place sliced cucumbers on rice ball and re wrap and shape into a ball shape.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-7.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 8</div>
+                <div class="recipe-content">
+                    <p>Garnish with fish roe.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-8.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 9</div>
+                <div class="recipe-content">
+                    <p>To make fish temari sushi, follow step 4, place piece of sashimi on top and wrap with cling wrap like step 5.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-9.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 10</div>
+                <div class="recipe-content">
+                    <p>Garnish with fish roe.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-10.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 11</div>
+                <div class="recipe-content">
+                    <p>To make egg temari sushi, place egg slices on rice ball and shape.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-11.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 12</div>
+                <div class="recipe-content">
+                    <p>And garnish.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-12.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 13</div>
+                <div class="recipe-content">
+                    <p>Other options for temari sushi garnish are nori, furikake, Japanese pickles, sesame seeds, shiso leaves etc.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-13.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+
+
+            <!-- slideshow:details START -->
+            <div class="detail-item">
+                <div class="headline">Step 14</div>
+                <div class="recipe-content">
+                    <p>Using the technique from steps 7 and 8, you can create a variety of temari sushi.
+                    </p>
+                </div>
+                <div class="background" style="background-image: url(assets/img/img-14.jpg);"></div>
+            </div>
+            <!-- slideshow:details END -->
+        </div>
+        <!-- slideshow:details END -->
+
+    </section>
+    <!-- slideshow END -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@4.1.4/imagesloaded.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/CSSPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/TextPlugin.min.js"></script>
+    <script src="assets/js/demo.js"></script>
+
+</body>
+
+</html>
